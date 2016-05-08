@@ -40,6 +40,12 @@ public class InputNode : BaseInputNode
                 calculateRandom();
             }
         }
+
+        nodeResult = inputValue.ToString();
+    }
+
+    public override void Tick(float deltaTime)
+    {
     }
 
     public override void DrawCurves()

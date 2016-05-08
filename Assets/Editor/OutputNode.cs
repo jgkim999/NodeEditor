@@ -82,4 +82,9 @@ public class OutputNode : BaseNode
             inputNode = input;
         }
     }
+
+    public override void Tick(float deletaTime)
+    {
+
+    }
 }

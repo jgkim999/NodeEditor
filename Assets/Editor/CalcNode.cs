@@ -101,7 +101,7 @@ public class CalcNode :  BaseInputNode
         }
     }
 
-    public override string getResult()
+    public override void Tick(float delteTime)
     {
         float input1Value = 0;
         float input2Value = 0;
@@ -136,7 +136,7 @@ public class CalcNode :  BaseInputNode
             break;
         }
 
-        return result;
+        nodeResult = result;
     }
 
     public override BaseInputNode ClickedOnInput(Vector2 pos)

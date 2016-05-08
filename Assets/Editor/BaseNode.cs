@@ -27,4 +27,9 @@ public abstract class BaseNode : ScriptableObject
     {
         return null;
     }
+
+
+    public virtual void Tick(float deltaTime)
+    {
+    }
 }

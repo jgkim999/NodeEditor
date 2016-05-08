@@ -9,15 +9,37 @@ public class NodeEditor : EditorWindow
     private Vector2 mousePos;
     private BaseNode selectednode;
     private bool makeTransitionMode = false;
+    Vector2 scrollPos;
+    private System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
 
     [MenuItem("Windows/Node Editor")]
     static void ShowEditor()
     {
         NodeEditor editor = EditorWindow.GetWindow<NodeEditor>();
+        editor.stopwatch.Start();
+    }
+
+    void Update()
+    {
+        long dTime = stopwatch.ElapsedMilliseconds;
+        float deltaTime = ((float) dTime) / 1000;
+        foreach (BaseNode b in windows)
+        {
+            b.Tick(deltaTime);
+        }
+        stopwatch.Reset();
+        stopwatch.Start();
+
+        Repaint();
     }
 
     void OnGUI()
     {
+        // vertical space
+        //GUILayout.Space(20);
+        //GUILayout.BeginVertical();
+        //GUILayout.BeginHorizontal();
+
         Event e = Event.current;
 
         mousePos = e.mousePosition;
@@ -47,6 +69,8 @@ public class NodeEditor : EditorWindow
                     menu.AddItem(new GUIContent("Add Output Node"), false, ContextCallback, "outputNode");
                     menu.AddItem(new GUIContent("Add Calculation Node"), false, ContextCallback, "calcNode");
                     menu.AddItem(new GUIContent("Add Comparison Node"), false, ContextCallback, "compNode");
+                    menu.AddSeparator("");
+                    menu.AddItem(new GUIContent("Add GameObject Node"), false, ContextCallback, "goActive");
 
                     menu.ShowAsContext();
                     e.Use();
@@ -127,18 +151,79 @@ public class NodeEditor : EditorWindow
             Repaint();
         }
 
+        float width = 0;
+        float height = 0;
+
+        CalcWindowsWidthHeight(width, height);
+
+//         scrollPos = GUILayout.BeginScrollView(scrollPos, true, true);
+//         {
+            DrawCurves();
+            DrawWindows();
+      //  }
+        //GUILayout.EndScrollView();
+    }
+
+    void CalcWindowsWidthHeight(float width, float height)
+    {
+        float minX = 0.0f;
+        float maxX = 0.0f;
+        float minY = 0.0f;
+        float maxY = 0.0f;
+        foreach (BaseNode n in windows)
+        {
+            float topX = n.windowRect.position.x;
+            float bottomX = n.windowRect.position.x + n.windowRect.width;
+            float topY = n.windowRect.position.y;
+            float bottomY = n.windowRect.position.y + n.windowRect.height;
+            if (topX < minX)
+                minX = topX;
+            if (bottomX > maxX)
+                maxX = bottomX;
+            if (topY < minY)
+                minY = topY;
+            if (bottomY > maxY)
+                maxY = bottomY;
+        }
+        width = maxX - minX;
+        height = maxY - minY;
+
+        if (position.width > width)
+            width = position.width;
+        if (position.height > height)
+            height = position.height;
+
+        if (width < 1024)
+            width = 1024;
+        if (height < 1024)
+            height = 1024;
+
+        GUILayout.Label("width " + width);
+        GUILayout.Label("height " + height);
+        /*
+        //GUILayout.Label("minX " + minX);
+        //GUILayout.Label("maxX " + maxX);
+        //GUILayout.Label("minY " + minY);
+        //GUILayout.Label("maxY " + maxY);
+        */
+
+    }
+
+    void DrawCurves()
+    {
         foreach (BaseNode n in windows)
         {
             n.DrawCurves();
         }
+    }
 
+    void DrawWindows()
+    {
         BeginWindows();
-
         for (int i = 0; i < windows.Count; ++i)
         {
             windows[i].windowRect = GUI.Window(i, windows[i].windowRect, DrawNodeWindow, windows[i].windowTitle);
         }
-
         EndWindows();
     }
 
@@ -174,6 +259,12 @@ public class NodeEditor : EditorWindow
             ComparisonNode compNode = new ComparisonNode();
             compNode.windowRect = new Rect(mousePos.x, mousePos.y, 200, 100);
             windows.Add(compNode);
+        }
+        else if (clb.Equals("goActive"))
+        {
+            GameObjectActive goNode = new GameObjectActive();
+            goNode.windowRect = new Rect(mousePos.x, mousePos.y, 200, 100);
+            windows.Add(goNode);
         }
         else if (clb.Equals("makeTransition"))
         {

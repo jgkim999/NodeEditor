@@ -2,14 +2,17 @@
 using System.Collections;
 using UnityEditor;
 
-public class BaseInputNode : BaseNode
+public abstract class BaseInputNode : BaseNode
 {
+    protected string nodeResult = "None";
+
     public virtual string getResult()
     {
-        return "None";
+        return nodeResult;
     }
 
     public override void DrawCurves()
     {
     }
+
 }

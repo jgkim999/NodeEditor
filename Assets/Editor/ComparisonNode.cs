@@ -77,7 +77,7 @@ public class ComparisonNode : BaseInputNode
         }
     }
 
-    public override string getResult()
+    public override void Tick(float delteTime)
     {
         float input1Value = 0;
         float input2Value = 0;
@@ -118,7 +118,7 @@ public class ComparisonNode : BaseInputNode
             break;
         }
 
-        return result;
+        nodeResult = result;
     }
 
     public override void NodeDeleted(BaseNode node)
