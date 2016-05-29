@@ -2,7 +2,7 @@
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
-[Node(false, "Standard/Ai/AiSequence Node")]
+[Node(false, "Standard/Ai/Sequence")]
 public class AiSequenceNode : Node
 {
     public const string ID = "AiSequenceNode";
@@ -15,7 +15,7 @@ public class AiSequenceNode : Node
         AiSequenceNode node = CreateInstance<AiSequenceNode>();
 
         node.rect = new Rect(pos.x, pos.y, 150, 60);
-        node.name = "Ai Sequence Node";
+        node.name = "Sequence";
         node.headColor = Color.cyan;
 
         node.CreateInput("Value", "Float");

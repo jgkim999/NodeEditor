@@ -2,7 +2,7 @@
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
-[Node(false, "Standard/Ai/HaveTarget Node")]
+[Node(false, "Standard/Ai/HaveTarget")]
 public class AiHaveTargetNode : Node
 {
     public const string ID = "AiHaveTargetNode";
@@ -15,7 +15,7 @@ public class AiHaveTargetNode : Node
         AiHaveTargetNode node = CreateInstance<AiHaveTargetNode>();
 
         node.rect = new Rect(pos.x, pos.y, 150, 60);
-        node.name = "Ai Have Target Node";
+        node.name = "Have target";
         node.headColor = Color.magenta;
 
         node.CreateInput("Value", "Float");
@@ -26,10 +26,7 @@ public class AiHaveTargetNode : Node
 
     protected internal override void NodeGUI()
     {
-        Color oldColor = GUI.contentColor;
-        GUI.contentColor = Color.yellow;
         GUILayout.Label("AI have target Node!");
-        GUI.contentColor = oldColor;
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Order");
@@ -48,6 +45,13 @@ public class AiHaveTargetNode : Node
 
         GUILayout.EndVertical();
         GUILayout.EndHorizontal();
+    }
+
+    protected internal override void OnAddInputConnection(NodeInput input)
+    {
+        if (input == null)
+            return;
+        order = input.connection.connections.Count;
     }
 
     protected internal override void OnAddOutputConnection(NodeOutput output)

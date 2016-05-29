@@ -2,21 +2,21 @@
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
-[Node(false, "Standard/Ai/Selector")]
-public class AiSelectorNode : Node
+[Node(false, "Standard/Ai/FindTarget")]
+public class AiFindTargetNode : Node
 {
-    public const string ID = "AiSelectorNode";
+    public const string ID = "AiFindTargetNode";
     public override string GetID { get { return ID; } }
     public int order = 0;
     public string orderText;
 
     public override Node Create(Vector2 pos)
     {
-        AiSelectorNode node = CreateInstance<AiSelectorNode>();
+        AiFindTargetNode node = CreateInstance<AiFindTargetNode>();
 
         node.rect = new Rect(pos.x, pos.y, 150, 60);
-        node.name = "Selector";
-        node.headColor = Color.yellow;
+        node.name = "Find Target";
+        node.headColor = Color.magenta;
 
         node.CreateInput("Value", "Float");
         node.CreateOutput("Output val", "Float");
@@ -26,10 +26,7 @@ public class AiSelectorNode : Node
 
     protected internal override void NodeGUI()
     {
-        Color oldColor = GUI.contentColor;
-        GUI.contentColor = Color.yellow;
-        GUILayout.Label("AI Selector Node!");
-        GUI.contentColor = oldColor;
+        GUILayout.Label("AI find target Node!");
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Order");

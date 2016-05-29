@@ -2,21 +2,22 @@
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
-[Node(false, "Standard/Ai/Selector")]
-public class AiSelectorNode : Node
+[Node(false, "Standard/Ai/Skill attack")]
+public class AiSkillAttackNode : Node
 {
-    public const string ID = "AiSelectorNode";
+    public const string ID = "AiSkillAttackNode";
     public override string GetID { get { return ID; } }
     public int order = 0;
     public string orderText;
+    public string skillValue = "0";
 
     public override Node Create(Vector2 pos)
     {
-        AiSelectorNode node = CreateInstance<AiSelectorNode>();
+        AiSkillAttackNode node = CreateInstance<AiSkillAttackNode>();
 
-        node.rect = new Rect(pos.x, pos.y, 150, 60);
-        node.name = "Selector";
-        node.headColor = Color.yellow;
+        node.rect = new Rect(pos.x, pos.y, 150, 100);
+        node.name = "Skill Attack";
+        node.headColor = Color.green;
 
         node.CreateInput("Value", "Float");
         node.CreateOutput("Output val", "Float");
@@ -26,15 +27,19 @@ public class AiSelectorNode : Node
 
     protected internal override void NodeGUI()
     {
-        Color oldColor = GUI.contentColor;
-        GUI.contentColor = Color.yellow;
-        GUILayout.Label("AI Selector Node!");
-        GUI.contentColor = oldColor;
+        GUILayout.Label("AI skill attack");
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Order");
         orderText = GUILayout.TextField(order.ToString());
         GUILayout.EndHorizontal();
+
+        GUILayout.BeginVertical();
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("value");
+        skillValue = GUILayout.TextField(skillValue.ToString());
+        GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
 
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();

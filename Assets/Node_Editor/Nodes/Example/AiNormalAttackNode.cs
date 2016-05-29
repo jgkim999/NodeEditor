@@ -2,21 +2,21 @@
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
-[Node(false, "Standard/Ai/FindTarget Node")]
-public class AiFindTargetNode : Node
+[Node(false, "Standard/Ai/Normal attack")]
+public class AiNormalAttackNode : Node
 {
-    public const string ID = "AiFindTargetNode";
+    public const string ID = "AiNormalAttackNode";
     public override string GetID { get { return ID; } }
     public int order = 0;
     public string orderText;
 
     public override Node Create(Vector2 pos)
     {
-        AiFindTargetNode node = CreateInstance<AiFindTargetNode>();
+        AiNormalAttackNode node = CreateInstance<AiNormalAttackNode>();
 
         node.rect = new Rect(pos.x, pos.y, 150, 60);
-        node.name = "Ai Find Target Node";
-        node.headColor = Color.magenta;
+        node.name = "Normal Attack";
+        node.headColor = Color.green;
 
         node.CreateInput("Value", "Float");
         node.CreateOutput("Output val", "Float");
@@ -26,10 +26,7 @@ public class AiFindTargetNode : Node
 
     protected internal override void NodeGUI()
     {
-        Color oldColor = GUI.contentColor;
-        GUI.contentColor = Color.yellow;
-        GUILayout.Label("AI find target Node!");
-        GUI.contentColor = oldColor;
+        GUILayout.Label("AI normal attack");
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Order");
@@ -48,6 +45,13 @@ public class AiFindTargetNode : Node
 
         GUILayout.EndVertical();
         GUILayout.EndHorizontal();
+    }
+
+    protected internal override void OnAddInputConnection(NodeInput input)
+    {
+        if (input == null)
+            return;
+        order = input.connection.connections.Count;
     }
 
     protected internal override void OnAddOutputConnection(NodeOutput output)
