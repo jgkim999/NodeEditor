@@ -2,14 +2,13 @@
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 using UnityEditor;
+using System.Xml;
 
 [Node(false, "Standard/Ai/Dice check")]
 public class AiDiceCheckNode : Node
 {
     public const string ID = "AiDiceCheckNode";
     public override string GetID { get { return ID; } }
-    public int order = 0;
-    public string orderText;
     // = equals 1 + 1 = 2
     // ≠ not equal to 1 + 1 ≠ 1
     // > greater than 5 > 2
@@ -73,18 +72,15 @@ public class AiDiceCheckNode : Node
         GUILayout.EndVertical();
     }
 
-    protected internal override void OnAddInputConnection(NodeInput input)
+    protected internal override void WriteXml(XmlWriter writer)
     {
-        if (input == null)
-            return;
-        order = input.connection.connections.Count;
-    }
+        writer.WriteStartElement("ai_node");
+        base.WriteXml(writer);
 
-    protected internal override void OnAddOutputConnection(NodeOutput output)
-    {
-        if (output == null)
-            return;
-        //int outputCount = this.Outputs.Count;
+        writer.WriteElementString("compare_type", compType.ToString());
+        writer.WriteElementString("check_value", checkValue.ToString());
+
+        writer.WriteEndElement();
     }
 
     public override bool Calculate()

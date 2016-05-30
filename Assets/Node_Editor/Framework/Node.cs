@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
+using System.Xml;
 
 namespace NodeEditorFramework
 {
@@ -27,13 +28,16 @@ namespace NodeEditorFramework
 		internal bool calculated = true;
 
         public Color headColor = Color.white;
+        public Guid guid = Guid.NewGuid();
+        public int order = 0;
+        public string orderText;
 
-		#region General
+        #region General
 
-		/// <summary>
-		/// Init the Node Base after the Node has been created. This includes adding to canvas, and to calculate for the first time
-		/// </summary>
-		protected internal void InitBase()
+        /// <summary>
+        /// Init the Node Base after the Node has been created. This includes adding to canvas, and to calculate for the first time
+        /// </summary>
+        protected internal void InitBase()
 		{
 			Calculate();
 			if (!NodeEditor.curNodeCanvas.nodes.Contains(this))
@@ -163,23 +167,48 @@ namespace NodeEditorFramework
 		/// <summary>
 		/// Callback when the NodeInput was assigned a new connection
 		/// </summary>
-		protected internal virtual void OnAddInputConnection(NodeInput input) {}
+		protected internal virtual void OnAddInputConnection(NodeInput input)
+        {
+            if (input == null)
+                return;
+            order = input.connection.connections.Count;
+        }
 
 		/// <summary>
 		/// Callback when the NodeOutput was assigned a new connection(the last in the list)
 		/// </summary>
 		protected internal virtual void OnAddOutputConnection(NodeOutput output) {}
 
-		#endregion
+        #endregion
 
-		#region Additional Serialization
+        #region Additional Serialization
 
-		/// <summary>
-		/// Returns all additional ScriptableObjects this Node holds.
-		/// That means only the actual SOURCES, simple REFERENCES will not be returned
-		/// This means all SciptableObjects returned here do not have it's source elsewhere
-		/// </summary>
-		protected internal virtual ScriptableObject[] GetScriptableObjects() { return new ScriptableObject[0]; }
+        protected internal virtual void WriteXml(XmlWriter writer)
+        {
+            writer.WriteElementString("id", GetID);
+            writer.WriteElementString("guid", guid.ToString());
+            writer.WriteElementString("order", order.ToString());
+
+            foreach (NodeKnob knob in nodeKnobs)
+            {
+                NodeOutput knobOutput = knob as NodeOutput;
+                if (knobOutput == null)
+                    continue;
+                writer.WriteStartElement("connections");
+                foreach (NodeInput knobInput in knobOutput.connections)
+                {
+                    writer.WriteElementString("connection", knobInput.body.guid.ToString());
+                }
+                writer.WriteEndElement();
+            }
+        }
+
+        /// <summary>
+        /// Returns all additional ScriptableObjects this Node holds.
+        /// That means only the actual SOURCES, simple REFERENCES will not be returned
+        /// This means all SciptableObjects returned here do not have it's source elsewhere
+        /// </summary>
+        protected internal virtual ScriptableObject[] GetScriptableObjects() { return new ScriptableObject[0]; }
 
 		/// <summary>
 		/// Replaces all REFERENCES aswell as SOURCES of any ScriptableObjects this Node holds with the cloned versions in the serialization process.

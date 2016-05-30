@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
+using System.Xml;
 
 [Node(false, "Standard/Ai/Dice")]
 public class AiDiceNode : Node
 {
     public const string ID = "AiDiceNode";
     public override string GetID { get { return ID; } }
-    public int order = 0;
-    public string orderText;
     public enum DiceResultType { True, False }
     public DiceResultType diceResult = DiceResultType.False;
 
@@ -56,18 +55,14 @@ public class AiDiceNode : Node
         GUILayout.EndHorizontal();
     }
 
-    protected internal override void OnAddInputConnection(NodeInput input)
+    protected internal override void WriteXml(XmlWriter writer)
     {
-        if (input == null)
-            return;
-        order = input.connection.connections.Count;
-    }
+        writer.WriteStartElement("ai_node");
+        base.WriteXml(writer);
 
-    protected internal override void OnAddOutputConnection(NodeOutput output)
-    {
-        if (output == null)
-            return;
-        //int outputCount = this.Outputs.Count;
+        writer.WriteElementString("dice_result", diceResult.ToString());
+
+        writer.WriteEndElement();
     }
 
     public override bool Calculate()

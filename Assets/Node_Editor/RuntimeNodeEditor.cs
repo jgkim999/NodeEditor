@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
-public class RuntimeNodeEditor : MonoBehaviour 
+public class RuntimeNodeEditor : MonoBehaviour
 {
 	public string canvasPath;
 	public NodeCanvas canvas;
@@ -17,7 +17,7 @@ public class RuntimeNodeEditor : MonoBehaviour
 	public Rect specifiedRootRect;
 	public Rect specifiedCanvasRect;
 
-	public void Start () 
+	public void Start ()
 	{
 		if (!string.IsNullOrEmpty (canvasPath))
 			LoadNodeCanvas (canvasPath);
@@ -27,7 +27,7 @@ public class RuntimeNodeEditor : MonoBehaviour
 		FPSCounter.Create ();
 	}
 
-	public void Update () 
+	public void Update ()
 	{
 		NodeEditor.Update ();
 		FPSCounter.Update ();
@@ -35,10 +35,10 @@ public class RuntimeNodeEditor : MonoBehaviour
 
 	public void OnGUI ()
 	{
-		if (canvas != null && state != null) 
+		if (canvas != null && state != null)
 		{
 			NodeEditor.checkInit ();
-			if (NodeEditor.InitiationError) 
+			if (NodeEditor.InitiationError)
 			{
 				GUILayout.Label ("Initiation failed! Check console for more information!");
 				return;
@@ -66,35 +66,35 @@ public class RuntimeNodeEditor : MonoBehaviour
 		}
 	}
 
-	public void SideGUI () 
+	public void SideGUI()
 	{
-		GUILayout.BeginArea (new Rect (canvasRect.x + state.canvasRect.width, state.canvasRect.y, 200, state.canvasRect.height), NodeEditorGUI.nodeSkin.box);
-		GUILayout.Label (new GUIContent ("Node Editor (" + canvas.name + ")", "The currently opened canvas in the Node Editor"));
-		screenSize = GUILayout.Toggle (screenSize, "Adapt to Screen");
-		GUILayout.Label ("FPS: " + FPSCounter.currentFPS);
+		GUILayout.BeginArea(new Rect(canvasRect.x + state.canvasRect.width, state.canvasRect.y, 200, state.canvasRect.height), NodeEditorGUI.nodeSkin.box);
+		GUILayout.Label(new GUIContent("Node Editor (" + canvas.name + ")", "The currently opened canvas in the Node Editor"));
+		screenSize = GUILayout.Toggle(screenSize, "Adapt to Screen");
+		GUILayout.Label("FPS: " + FPSCounter.currentFPS);
 
-		GUILayout.Label (new GUIContent ("Node Editor (" + canvas.name + ")"), NodeEditorGUI.nodeLabelBold);
+		GUILayout.Label(new GUIContent("Node Editor (" + canvas.name + ")"), NodeEditorGUI.nodeLabelBold);
 
 		#if UNITY_EDITOR
-		if (GUILayout.Button (new GUIContent ("Save Canvas", "Saves the Canvas to a Canvas Save File in the Assets Folder")))
+		if (GUILayout.Button(new GUIContent("Save Canvas", "Saves the Canvas to a Canvas Save File in the Assets Folder")))
 		{
-			string path = UnityEditor.EditorUtility.SaveFilePanelInProject ("Save Node Canvas", "Node Canvas", "asset", "", NodeEditor.editorPath + "Resources/Saves/");
-			if (!string.IsNullOrEmpty (path))
-				NodeEditorSaveManager.SaveNodeCanvas (path, true, canvas, state);
+			string path = UnityEditor.EditorUtility.SaveFilePanelInProject("Save Node Canvas", "Node Canvas", "asset", "", NodeEditor.editorPath + "Resources/Saves/");
+			if (!string.IsNullOrEmpty(path))
+				NodeEditorSaveManager.SaveNodeCanvas(path, true, canvas, state);
 		}
 
-		if (GUILayout.Button (new GUIContent ("Load Canvas", "Loads the Canvas from a Canvas Save File in the Assets Folder"))) 
+		if (GUILayout.Button(new GUIContent("Load Canvas", "Loads the Canvas from a Canvas Save File in the Assets Folder")))
 		{
-			string path = UnityEditor.EditorUtility.OpenFilePanel ("Load Node Canvas", NodeEditor.editorPath + "Resources/Saves/", "asset");
-			if (!path.Contains (Application.dataPath)) 
+			string path = UnityEditor.EditorUtility.OpenFilePanel("Load Node Canvas", NodeEditor.editorPath + "Resources/Saves/", "asset");
+			if (!path.Contains(Application.dataPath))
 			{
-				if (!string.IsNullOrEmpty (path))
+				if (!string.IsNullOrEmpty(path))
 					Debug.LogWarning ("You should select an asset inside your project folder!");
 			}
 			else
 			{
-				path = path.Replace (Application.dataPath, "Assets");
-				LoadNodeCanvas (path);
+				path = path.Replace(Application.dataPath, "Assets");
+				LoadNodeCanvas(path);
 			}
 		}
 
@@ -112,42 +112,44 @@ public class RuntimeNodeEditor : MonoBehaviour
 		NodeEditorGUI.knobSize = RTEditorGUI.IntSlider (new GUIContent ("Handle Size", "The size of the Node Input/Output handles"), NodeEditorGUI.knobSize, 12, 20);
 		state.zoom = RTEditorGUI.Slider (new GUIContent ("Zoom", "Use the Mousewheel. Seriously."), state.zoom, 0.6f, 2);
 
-		GUILayout.EndArea ();
+		GUILayout.EndArea();
 	}
 
-	public void LoadNodeCanvas (string path) 
+	public void LoadNodeCanvas (string path)
 	{
 		// Load the NodeCanvas
-		canvas = NodeEditorSaveManager.LoadNodeCanvas (path);
+		canvas = NodeEditorSaveManager.LoadNodeCanvas(path);
 		if (canvas == null)
 		{
-			NewNodeCanvas ();
+			NewNodeCanvas();
 			return;
 		}
 
 		// Load the associated MainEditorState
 		List<NodeEditorState> editorStates = NodeEditorSaveManager.LoadEditorStates (path);
-		if (editorStates.Count == 0)
-			state = ScriptableObject.CreateInstance<NodeEditorState> ();
-		else 
-		{
-			state = editorStates.Find (x => x.name == "MainEditorState");
-			if (state == null) state = editorStates[0];
-		}
+        if (editorStates.Count == 0)
+        {
+            state = ScriptableObject.CreateInstance<NodeEditorState>();
+        }
+        else
+        {
+            state = editorStates.Find(x => x.name == "MainEditorState");
+            if (state == null)
+                state = editorStates[0];
+        }
 		state.canvas = canvas;
-		
-		NodeEditor.RecalculateAll (canvas);
+
+		NodeEditor.RecalculateAll(canvas);
 	}
 
-	public void NewNodeCanvas () 
+	public void NewNodeCanvas()
 	{
-		canvas = ScriptableObject.CreateInstance<NodeCanvas> ();
-		state = ScriptableObject.CreateInstance<NodeEditorState> ();
+		canvas = ScriptableObject.CreateInstance<NodeCanvas>();
+		state = ScriptableObject.CreateInstance<NodeEditorState>();
 		state.canvas = canvas;
 		state.name = "MainEditorState";
 	}
 }
-
 
 public class FPSCounter
 {
@@ -158,19 +160,19 @@ public class FPSCounter
 
 	private static FPSCounter instance;
 
-	public static void Create ()
+	public static void Create()
 	{
 		if (instance == null)
 		{
-			instance = new FPSCounter ();
+			instance = new FPSCounter();
 			instance.FPSNextPeriod = Time.realtimeSinceStartup + FPSMeasurePeriod;
 		}
 	}
 
 	// has to be called
-	public static void Update ()
+	public static void Update()
 	{
-		Create ();
+		Create();
 		instance.FPSAccumulator++;
 		if (Time.realtimeSinceStartup > instance.FPSNextPeriod)
 		{

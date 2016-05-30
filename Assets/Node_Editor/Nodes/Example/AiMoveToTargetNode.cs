@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
+using System.Xml;
 
 [Node(false, "Standard/Ai/Move to target")]
 public class AiMoveToTargetNode : Node
 {
     public const string ID = "AiMoveToTargetNode";
     public override string GetID { get { return ID; } }
-    public int order = 0;
-    public string orderText;
 
     public override Node Create(Vector2 pos)
     {
@@ -47,18 +46,11 @@ public class AiMoveToTargetNode : Node
         GUILayout.EndHorizontal();
     }
 
-    protected internal override void OnAddInputConnection(NodeInput input)
+    protected internal override void WriteXml(XmlWriter writer)
     {
-        if (input == null)
-            return;
-        order = input.connection.connections.Count;
-    }
-
-    protected internal override void OnAddOutputConnection(NodeOutput output)
-    {
-        if (output == null)
-            return;
-        //int outputCount = this.Outputs.Count;
+        writer.WriteStartElement("ai_node");
+        base.WriteXml(writer);
+        writer.WriteEndElement();
     }
 
     public override bool Calculate()

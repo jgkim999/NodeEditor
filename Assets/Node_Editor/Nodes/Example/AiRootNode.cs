@@ -3,19 +3,19 @@ using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 using System.Xml;
 
-[Node(false, "Standard/Ai/FindTarget")]
-public class AiFindTargetNode : Node
+[Node(false, "Standard/Ai/Root")]
+public class AiRootNode : Node
 {
-    public const string ID = "AiFindTargetNode";
+    public const string ID = "AiRootNode";
     public override string GetID { get { return ID; } }
 
     public override Node Create(Vector2 pos)
     {
-        AiFindTargetNode node = CreateInstance<AiFindTargetNode>();
+        AiRootNode node = CreateInstance<AiRootNode>();
 
         node.rect = new Rect(pos.x, pos.y, 150, 60);
-        node.name = "Find Target";
-        node.headColor = Color.magenta;
+        node.name = "Root";
+        node.headColor = Color.yellow;
 
         node.CreateInput("Value", "Float");
         node.CreateOutput("Output val", "Float");
@@ -25,7 +25,10 @@ public class AiFindTargetNode : Node
 
     protected internal override void NodeGUI()
     {
-        GUILayout.Label("AI find target Node!");
+        Color oldColor = GUI.contentColor;
+        GUI.contentColor = Color.yellow;
+        GUILayout.Label("AI Root Node!");
+        GUI.contentColor = oldColor;
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Order");

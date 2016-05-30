@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
+using System.Xml;
 
 [Node(false, "Standard/Ai/Sequence")]
 public class AiSequenceNode : Node
 {
     public const string ID = "AiSequenceNode";
     public override string GetID { get { return ID; } }
-    public int order = 0;
-    public string orderText;
-
+    
     public override Node Create(Vector2 pos)
     {
         AiSequenceNode node = CreateInstance<AiSequenceNode>();
@@ -47,13 +46,16 @@ public class AiSequenceNode : Node
         GUILayout.EndHorizontal();
     }
 
-    protected internal override void OnAddInputConnection(NodeInput input)
+    protected internal override void WriteXml(XmlWriter writer)
     {
-        if (input == null)
-            return;
-        order = input.connection.connections.Count;
+        writer.WriteStartElement("ai_node");
+        base.WriteXml(writer);
+        //writer.WriteAttributeString("id", GetID);
+        //writer.WriteAttributeString("guid", guid.ToString());
+        //writer.WriteElementString("Nested", "data");
+        writer.WriteEndElement();
     }
-
+        
     public override bool Calculate()
     {
         if (!allInputsReady())

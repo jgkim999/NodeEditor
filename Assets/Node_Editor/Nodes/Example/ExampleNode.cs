@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
+using System.Xml;
 
 [Node (false, "Standard/Example/Basic Node")]
 public class ExampleNode : Node

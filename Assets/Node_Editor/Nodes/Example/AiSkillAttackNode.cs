@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
 using NodeEditorFramework.Utilities;
+using System.Xml;
 
 [Node(false, "Standard/Ai/Skill attack")]
 public class AiSkillAttackNode : Node
 {
     public const string ID = "AiSkillAttackNode";
     public override string GetID { get { return ID; } }
-    public int order = 0;
-    public string orderText;
     public string skillValue = "0";
 
     public override Node Create(Vector2 pos)
@@ -55,18 +54,14 @@ public class AiSkillAttackNode : Node
         GUILayout.EndHorizontal();
     }
 
-    protected internal override void OnAddInputConnection(NodeInput input)
+    protected internal override void WriteXml(XmlWriter writer)
     {
-        if (input == null)
-            return;
-        order = input.connection.connections.Count;
-    }
+        writer.WriteStartElement("ai_node");
+        base.WriteXml(writer);
 
-    protected internal override void OnAddOutputConnection(NodeOutput output)
-    {
-        if (output == null)
-            return;
-        //int outputCount = this.Outputs.Count;
+        writer.WriteElementString("skill_value", skillValue.ToString());
+
+        writer.WriteEndElement();
     }
 
     public override bool Calculate()

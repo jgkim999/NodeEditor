@@ -23,40 +23,40 @@ namespace NodeEditorFramework
 		/// <summary>
 		/// Gets the Type the specified identifier representates or, if not declared and checked, creates a new type data for the passed type
 		/// </summary>
-		public static Type GetType (string typeName, bool createIfNotDeclared)
+		public static Type GetType(string typeName, bool createIfNotDeclared)
 		{
-			TypeData data = GetTypeData (typeName, createIfNotDeclared);
+			TypeData data = GetTypeData(typeName, createIfNotDeclared);
 			return data != null? data.Type : NullType;
 		}
 
 		/// <summary>
 		/// Gets the type data with the specified identifier or, if not declared and checked, creates a new one when a valid type name with namespace is passed
 		/// </summary>
-		public static TypeData GetTypeData (string typeName, bool createIfNotDeclared)
+		public static TypeData GetTypeData(string typeName, bool createIfNotDeclared)
 		{
 			if (types == null || types.Count == 0)
-				NodeEditor.ReInit (false);
+				NodeEditor.ReInit(false);
 			TypeData typeData;
-			if (!types.TryGetValue (typeName, out typeData))
+			if (!types.TryGetValue(typeName, out typeData))
 			{
 				if (createIfNotDeclared)
 				{
-					Type type = Type.GetType (typeName);
+					Type type = Type.GetType(typeName);
 					if (type == null)
 					{
-						typeData = types.First ().Value;
-						Debug.LogError ("No TypeData defined for: " + typeName + " and type could not be found either!");
+						typeData = types.First().Value;
+						Debug.LogError("No TypeData defined for: " + typeName + " and type could not be found either!");
 					}
 					else
 					{
-						typeData = new TypeData (type);
-						types.Add (typeName, typeData);
+						typeData = new TypeData(type);
+						types.Add(typeName, typeData);
 					}
 				}
 				else
 				{
-					typeData = types.First ().Value;
-					Debug.LogError ("No TypeData defined for: " + typeName + "!");
+					typeData = types.First().Value;
+					Debug.LogError("No TypeData defined for: " + typeName + "!");
 				}
 			}
 			return typeData;
@@ -65,22 +65,22 @@ namespace NodeEditorFramework
 		/// <summary>
 		/// Gets the type data for the specified type or, if not declared and checked, creates a new one for that type
 		/// </summary>
-		public static TypeData GetTypeData (Type type, bool createIfNotDeclared)
+		public static TypeData GetTypeData(Type type, bool createIfNotDeclared)
 		{
 			if (types == null || types.Count == 0)
-				NodeEditor.ReInit (false);
-			TypeData typeData = types.Values.First ((TypeData tData) => tData.Type == type);
+				NodeEditor.ReInit(false);
+			TypeData typeData = types.Values.First((TypeData tData) => tData.Type == type);
 			if (typeData == null)
 			{
 				if (createIfNotDeclared)
 				{
-					typeData = new TypeData (type);
-					types.Add (type.FullName, typeData);
+					typeData = new TypeData(type);
+					types.Add(type.FullName, typeData);
 				}
 				else
 				{
-					typeData = types.First ().Value;
-					Debug.LogError ("No TypeData defined for: " + type.FullName + "!");
+					typeData = types.First().Value;
+					Debug.LogError("No TypeData defined for: " + type.FullName + "!");
 				}
 			}
 			return typeData;
@@ -89,14 +89,14 @@ namespace NodeEditorFramework
 		/// <summary>
 		/// Fetches every Type Declaration in the script assemblies and the executing one, if the NodeEditor is packed into a .dll
 		/// </summary>
-		internal static void FetchTypes ()
+		internal static void FetchTypes()
 		{
-			types = new Dictionary<string, TypeData> { { "None", new TypeData () } };
+			types = new Dictionary<string, TypeData> { { "None", new TypeData() } };
 
-			IEnumerable<Assembly> scriptAssemblies = AppDomain.CurrentDomain.GetAssemblies ().Where ((Assembly assembly) => assembly.FullName.Contains ("Assembly"));
+			IEnumerable<Assembly> scriptAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where((Assembly assembly) => assembly.FullName.Contains("Assembly"));
 			foreach (Assembly assembly in scriptAssemblies)
 			{ // Iterate through each script assembly
-				IEnumerable<Type> typeDeclarations = assembly.GetTypes ().Where (T => T.IsClass && !T.IsAbstract && T.GetInterface (typeof (IConnectionTypeDeclaration).FullName) != null);
+				IEnumerable<Type> typeDeclarations = assembly.GetTypes().Where(T => T.IsClass && !T.IsAbstract && T.GetInterface (typeof (IConnectionTypeDeclaration).FullName) != null);
 				foreach (Type type in typeDeclarations)
 				{ // get all type declarations and create a typeData for them
 					IConnectionTypeDeclaration typeDecl = assembly.CreateInstance (type.FullName) as IConnectionTypeDeclaration;

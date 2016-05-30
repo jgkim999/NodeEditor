@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using NodeEditorFramework;
+using System.Xml;
 
 [Node (false, "Standard/Example/AllAround Node")]
 public class AllAroundNode : Node
