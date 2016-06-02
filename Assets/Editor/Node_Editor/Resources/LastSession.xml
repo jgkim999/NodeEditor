@@ -1,2 +1,159 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ai_nodes />
+<ai_nodes>
+  <ai_node>
+    <id>AiHaveTargetNode</id>
+    <guid>f3bf0414-c22c-45ce-8798-64680c03c21c</guid>
+    <order>1</order>
+    <connections />
+  </ai_node>
+  <ai_node>
+    <id>AiNormalAttackNode</id>
+    <guid>1c2b85b0-c4f9-46d8-9d92-6302a52a34db</guid>
+    <order>2</order>
+    <connections />
+  </ai_node>
+  <ai_node>
+    <id>AiSequenceNode</id>
+    <guid>1957c718-e912-4652-9529-e8ceed1780f5</guid>
+    <order>2</order>
+    <connections>
+      <connection>552085fb-341d-43ca-af0e-16b5745a2636</connection>
+      <connection>1c2b85b0-c4f9-46d8-9d92-6302a52a34db</connection>
+    </connections>
+  </ai_node>
+  <ai_node>
+    <id>AiSequenceNode</id>
+    <guid>351fa57d-130a-4af9-be15-24f11ec03d7d</guid>
+    <order>1</order>
+    <connections>
+      <connection>f3bf0414-c22c-45ce-8798-64680c03c21c</connection>
+      <connection>0581c215-0ecf-4f28-aa9d-53438b2b9e4d</connection>
+      <connection>ea55a442-c793-49b7-93d8-285fbada792e</connection>
+    </connections>
+  </ai_node>
+  <ai_node>
+    <id>AiTargetIsNearNode</id>
+    <guid>0581c215-0ecf-4f28-aa9d-53438b2b9e4d</guid>
+    <order>2</order>
+    <connections />
+  </ai_node>
+  <ai_node>
+    <id>AiHaveTargetNode</id>
+    <guid>b39a5731-5b4b-40df-aebd-4c402baa3ed8</guid>
+    <order>1</order>
+    <connections />
+  </ai_node>
+  <ai_node>
+    <id>AiSequenceNode</id>
+    <guid>523a7968-d253-415a-a621-b6633b237b32</guid>
+    <order>2</order>
+    <connections>
+      <connection>b39a5731-5b4b-40df-aebd-4c402baa3ed8</connection>
+      <connection>e186c6bd-57cf-4169-85e2-dde19014020e</connection>
+    </connections>
+  </ai_node>
+  <ai_node>
+    <id>AiMoveToTargetNode</id>
+    <guid>e186c6bd-57cf-4169-85e2-dde19014020e</guid>
+    <order>2</order>
+    <connections />
+  </ai_node>
+  <ai_node>
+    <id>AiSelectorNode</id>
+    <guid>f62d47d7-2811-4885-b7a9-911393fbc8a8</guid>
+    <order>1</order>
+    <connections>
+      <connection>351fa57d-130a-4af9-be15-24f11ec03d7d</connection>
+      <connection>523a7968-d253-415a-a621-b6633b237b32</connection>
+      <connection>9c8b5f3a-9fee-43d0-8b2d-d4bf2a5a7e2f</connection>
+    </connections>
+  </ai_node>
+  <ai_node>
+    <id>AiFindTargetNode</id>
+    <guid>9c8b5f3a-9fee-43d0-8b2d-d4bf2a5a7e2f</guid>
+    <order>3</order>
+    <connections />
+  </ai_node>
+  <ai_node>
+    <id>AiDiceNode</id>
+    <guid>072f4bd0-a857-4c95-94b0-5f8079c1ff9e</guid>
+    <order>1</order>
+    <connections />
+    <dice_result>False</dice_result>
+  </ai_node>
+  <ai_node>
+    <id>AiSequenceNode</id>
+    <guid>2367d231-c290-4c9a-9ebb-08a18647537e</guid>
+    <order>3</order>
+    <connections>
+      <connection>33da4952-48d1-4c3d-8ac3-0c6d5b98780a</connection>
+      <connection>15dfea95-e353-4dc2-b59e-1d9866edb59f</connection>
+    </connections>
+  </ai_node>
+  <ai_node>
+    <id>AiDiceCheckNode</id>
+    <guid>33da4952-48d1-4c3d-8ac3-0c6d5b98780a</guid>
+    <order>1</order>
+    <connections />
+    <compare_type>LessThan</compare_type>
+    <check_value>60</check_value>
+  </ai_node>
+  <ai_node>
+    <id>AiSkillAttackNode</id>
+    <guid>15dfea95-e353-4dc2-b59e-1d9866edb59f</guid>
+    <order>2</order>
+    <connections />
+    <skill_value>1</skill_value>
+  </ai_node>
+  <ai_node>
+    <id>AiSelectorNode</id>
+    <guid>ea55a442-c793-49b7-93d8-285fbada792e</guid>
+    <order>3</order>
+    <connections>
+      <connection>072f4bd0-a857-4c95-94b0-5f8079c1ff9e</connection>
+      <connection>1957c718-e912-4652-9529-e8ceed1780f5</connection>
+      <connection>2367d231-c290-4c9a-9ebb-08a18647537e</connection>
+      <connection>c89733cf-000b-4a02-997a-a472161bdbc9</connection>
+    </connections>
+  </ai_node>
+  <ai_node>
+    <id>AiDiceCheckNode</id>
+    <guid>95bab065-b9f3-41ed-9153-0db8d5b48223</guid>
+    <order>1</order>
+    <connections />
+    <compare_type>LessThan</compare_type>
+    <check_value>100</check_value>
+  </ai_node>
+  <ai_node>
+    <id>AiSequenceNode</id>
+    <guid>c89733cf-000b-4a02-997a-a472161bdbc9</guid>
+    <order>4</order>
+    <connections>
+      <connection>95bab065-b9f3-41ed-9153-0db8d5b48223</connection>
+      <connection>4bc77ac1-aa04-4488-b90f-726472d97155</connection>
+    </connections>
+  </ai_node>
+  <ai_node>
+    <id>AiSkillAttackNode</id>
+    <guid>4bc77ac1-aa04-4488-b90f-726472d97155</guid>
+    <order>2</order>
+    <connections />
+    <skill_value>2</skill_value>
+  </ai_node>
+  <ai_node>
+    <id>AiDiceCheckNode</id>
+    <guid>552085fb-341d-43ca-af0e-16b5745a2636</guid>
+    <order>1</order>
+    <connections />
+    <compare_type>LessThan</compare_type>
+    <check_value>50</check_value>
+  </ai_node>
+  <ai_node>
+    <id>AiRootNode</id>
+    <guid>4180dc2a-4e6e-4e30-a76e-59eb4637eaa4</guid>
+    <order>0</order>
+    <connections>
+      <connection>f62d47d7-2811-4885-b7a9-911393fbc8a8</connection>
+    </connections>
+  </ai_node>
+</ai_nodes>
